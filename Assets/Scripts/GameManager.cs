@@ -4,21 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Paramètres")]
+    [Header("Parameters")]
     [SerializeField] Character[] characters;
     [SerializeField] Bottles[] bottles;
+    [SerializeField] DialogueData[] dialogues;
     private int winTreshold;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     [System.Serializable]
     public class Character
@@ -51,5 +41,35 @@ public class GameManager : MonoBehaviour
 
         }
     }
+    
+    [ContextMenu("SetDialogues")]
+    void SetDialogues()
+    {
+        TextAsset rawDialogues = Resources.Load<TextAsset>("Dialogues");
+        string[] data = rawDialogues.text.Split(new [] { "\n" }, StringSplitOptions.None);
+        List<DialogueData> newDialogues = new List<DialogueData>();
+        foreach (string line in data)
+        {
+            string[] col = line.Split(new [] { "," }, StringSplitOptions.None);
+            if (int.TryParse(col[0], out int drink))
+                newDialogues.Add(new DialogueData(drink, col[1].Replace("\"", "")));
+            else
+                newDialogues.Add(new DialogueData(-1, col[1].Replace("\"", "")));
+        }
+        
+        dialogues = newDialogues.ToArray();
+    }
+}
 
+[System.Serializable]
+public struct DialogueData
+{
+    public int drinkAmount;
+    public string text;
+
+    public DialogueData(int drinkAmount, string text)
+    {
+        this.drinkAmount = drinkAmount;
+        this.text = text;
+    }
 }
