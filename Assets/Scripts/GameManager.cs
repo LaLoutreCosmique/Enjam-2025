@@ -5,24 +5,13 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Paramètres")]
+    [Header("Parameters")]
     [SerializeField] Character[] characters;
     [SerializeField] Bottles[] bottles;
+    [SerializeField] DialogueData[] dialogues;
     private int winTreshold;
     [HideInInspector]
     public Bottles currentBottle;
-<<<<<<< Updated upstream
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-=======
     private float drankAnimationDuration = 5f;
 
     [Header("Réfécences")]
@@ -36,7 +25,6 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         drankLevel.value = Mathf.MoveTowards(drankLevel.value, test, Time.deltaTime / drankAnimationDuration);
->>>>>>> Stashed changes
     }
 
     [System.Serializable]
@@ -92,8 +80,6 @@ public class GameManager : MonoBehaviour
         currentBottle = new Bottles();
         //Play animation
     }
-<<<<<<< Updated upstream
-=======
 
     public void GameIsLost()
     {
@@ -136,6 +122,16 @@ public class GameManager : MonoBehaviour
         dialogues = newDialogues.ToArray();
     }
 }
->>>>>>> Stashed changes
 
+[System.Serializable]
+public struct DialogueData
+{
+    public int drinkAmount;
+    public string text;
+
+    public DialogueData(int drinkAmount, string text)
+    {
+        this.drinkAmount = drinkAmount;
+        this.text = text;
+    }
 }
