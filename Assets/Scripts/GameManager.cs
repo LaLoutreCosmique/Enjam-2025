@@ -4,57 +4,39 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool canServe;
+    
     [Header("Parameters")]
     [SerializeField] Character[] characters;
-    [SerializeField] Bottles[] bottles;
+    [SerializeField] Bottle[] bottles;
     [SerializeField] DialogueData[] dialogues;
-    private int winTreshold;
+    [SerializeField] int winThreshold;
 
-    public bool gameIsLost;
-    public Bottles currentBottle;
+    int currentRound = -1;
+    Bottle CurrentBottle;
 
-    [System.Serializable]
-    public class Character
+    private void Start()
     {
-        [HideInInspector]
-        public float currentDrinkAmount;
-        public int endDrinkTreshold;
-        [HideInInspector]
-        public int TimeSinceHasDrank;
-        private Dictionary<int, string> dialogueByTreshold;
-        public float soberUpMultiplier;
-        public int timeToSober;
+        ChangeBottle();
     }
-
-    [SerializeField]
-    public class Bottles
-    {
-        public  int drinkValue;
-        public int servingSize;
-        private Sprite visual;
-    }
-
 
     public void ServeCharacter(int indexCharacter)
     {
-        characters[indexCharacter].currentDrinkAmount += currentBottle.drinkValue;
+        Debug.Log(indexCharacter);
+        
+        characters[indexCharacter].currentDrinkAmount += CurrentBottle.drinkValue;
         characters[indexCharacter].TimeSinceHasDrank = 0;
-        currentBottle.servingSize -= 1;
-        if(currentBottle.servingSize == 0)
-        {
-            ChangeBottle();
-        }
+        CurrentBottle.servingSize -= 1;
     }
 
-        public void EndOfTurn ()
+    public void EndOfTurn ()
     {
         foreach (Character chara in characters)
         {
-            if (chara.TimeSinceHasDrank >= chara.timeToSober && !gameIsLost)
+            if (chara.TimeSinceHasDrank >= chara.timeToSober)
             {
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
             }
-            else if (chara.currentDrinkAmount >= chara.endDrinkTreshold && !gameIsLost) { gameIsLost = true; }
 
             chara.TimeSinceHasDrank += 1;
         }
@@ -63,7 +45,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeBottle()
     {
-        currentBottle = new Bottles();
+        currentRound++;
+        CurrentBottle = bottles[currentRound];
         //Play animation
     }
     
@@ -84,6 +67,24 @@ public class GameManager : MonoBehaviour
         
         dialogues = newDialogues.ToArray();
     }
+}
+
+[System.Serializable]
+public class Character
+{
+    [HideInInspector] public float currentDrinkAmount;
+    [HideInInspector] public int TimeSinceHasDrank;
+    public int endDrinkThreshold;
+    public float soberUpMultiplier;
+    public int timeToSober;
+}
+
+[System.Serializable]
+public struct Bottle
+{
+    public  int drinkValue;
+    public int servingSize;
+    private Sprite visual;
 }
 
 [System.Serializable]
