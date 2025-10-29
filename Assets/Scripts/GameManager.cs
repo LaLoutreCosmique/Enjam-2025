@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Slider drankLevel;
     public Slider[] sliders;
+    public GameObject[] charactersOnTheRight;
 
     public float test;
 
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
 
     public void ServeCharacter(int indexCharacter)
     {
+        ToogleCharacter(indexCharacter);
         characters[indexCharacter].currentDrinkAmount += CurrentBottle.drinkValue;
         characters[indexCharacter].TimeSinceHasDrank = 0;
         sliders[indexCharacter].value = Mathf.MoveTowards(sliders[indexCharacter].value, characters[indexCharacter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
@@ -69,6 +71,30 @@ public class GameManager : MonoBehaviour
         
         if (CurrentBottle.servingSize == 0)
             StartCoroutine(EndServiceRoutine());
+    }
+
+    public void ToogleCharacter(int indexCharacter)
+    {
+        if (indexCharacter < 2)
+        {
+            charactersOnTheRight[0].SetActive(true);
+            charactersOnTheRight[1].SetActive(true);
+            charactersOnTheRight[2].SetActive(false);
+            charactersOnTheRight[3].SetActive(false);
+        }
+        else
+        {
+            charactersOnTheRight[0].SetActive(false);
+            charactersOnTheRight[1].SetActive(false);
+            charactersOnTheRight[2].SetActive(true);
+            charactersOnTheRight[3].SetActive(true);
+        }
+        int x = 0;
+        foreach (Slider slider in sliders)
+        {
+            slider.gameObject.SetActive(charactersOnTheRight[x].activeSelf);
+            x++;
+        }
     }
 
     // Character dialogues
