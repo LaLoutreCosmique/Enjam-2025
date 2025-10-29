@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
         drankCharacterIDs = new List<int>();
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
-        transitionTitle.text = "Service";
+        transitionTitle.text = "Service on";
         hasServiceStarted = true;
     }
 
@@ -64,6 +65,8 @@ public class GameManager : MonoBehaviour
         CurrentBottle.servingSize--;
         drankCharacterIDs.Add(indexCharacter);
         
+        Debug.Log(indexCharacter + "has drank: " + characters[indexCharacter].currentDrinkAmount);
+        
         if (CurrentBottle.servingSize == 0)
             StartCoroutine(EndServiceRoutine());
     }
@@ -71,17 +74,19 @@ public class GameManager : MonoBehaviour
     // Character dialogues
     IEnumerator EndServiceRoutine()
     {
+        transitionTitle.text = "Service off";
+        
         for (int i = 0; i < drankCharacterIDs.Count; i++)
         {
-            DisplayDialogue(characters[drankCharacterIDs[i]]);
+            DisplayDialogue(drankCharacterIDs[i]);
             yield return new WaitForSeconds(1f);
         }
+        EndOfTurn();
     }
 
-    void DisplayDialogue(Character character)
+    void DisplayDialogue(int characterID)
     {
-        
-        //Debug.Log();
+        Debug.Log("blabla");
     }
 
     public void EndOfTurn()
@@ -94,10 +99,22 @@ public class GameManager : MonoBehaviour
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
                 sliders[charaCounter].value = Mathf.MoveTowards(sliders[charaCounter].value, characters[charaCounter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
             }
-            else if (chara.currentDrinkAmount >= chara.endDrinkThreshold) { GameIsLost(); }
+            else if (chara.currentDrinkAmount >= chara.endDrinkThreshold)
+            {
+                GameIsLost();
+                return;
+            }
+            
+            if (currentRound + 1 >= bottles.Length)
+            {
+                Debug.Log("WIN GG");
+                GameIsLost(); // TODO: win condition
+                return;
+            }
 
             chara.TimeSinceHasDrank += 1;
             charaCounter++;
+            StartCoroutine(StartServiceRoutine());
         }
     }
 
