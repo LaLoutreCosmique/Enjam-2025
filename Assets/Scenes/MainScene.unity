@@ -927,7 +927,7 @@ MonoBehaviour:
   characters:
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 10
+    endDrinkThreshold: 2
     soberUpMultiplier: 1
     timeToSober: 1
   - currentDrinkAmount: 0
@@ -947,19 +947,23 @@ MonoBehaviour:
     timeToSober: 1
   bottles:
   - drinkValue: 1
+    servingSize: 2
+  - drinkValue: 1
     servingSize: 1
   - drinkValue: 1
     servingSize: 1
-  dialogueStepTriggers: 
+  - drinkValue: 1
+    servingSize: 1
+  dialogueStepTriggers: 010000000200000003000000
   dialogues:
   - textList:
-    - '"A la ripaille'
+    - 'A la ripaille, mes braves ! '
     - Va t'en renaler taverner !
-    - "Je me sens renassier !\t"
-    - '"Sire compere'
+    - Je me sens renassier !
+    - Sire compere, chantez moi une rotruenge
     - Ce plaisanteur m'engaillardit bien !
     - "Vas t'en m'en qu\xE9rir un nouvel godet"
-    - '"La vignasse va m''en mansquer'
+    - "La vignasse va m'en mansquer, va m'en qu\xE9rir sivamment"
     - Siousyou !
     - Cessons en folastries
     - "Nostre s'en allons \xE0 foler !"
@@ -971,11 +975,11 @@ MonoBehaviour:
     - Je m'en va conmence de rechief a braire
     - Vous ne faites que rengregier l'estance
     - "Le voil\xE0 sincopiser !"
-    - '"Vostre foiblance me courrouce'
+    - Vostre foiblance me courrouce, beivrez !
     - Il foiljole la pitance ce bougre !
     - Vos me vergognez !
   - textList:
-    - '"Oh'
+    - Oh, vos, je m'en va vos estriller !
     - 'Va mangailler la sivade ver si j''en facie interest '
     - Mordiable! L'en va singoier le roi este folain !
     - Va t'en rempaindre dans la tonnelle !
