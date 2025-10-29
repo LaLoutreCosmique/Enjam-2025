@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -33,12 +34,19 @@ public class GameManager : MonoBehaviour
     public GameObject[] charactersOnTheRight;
     public Slider[] slidersClone;
     public Canvas winCanvas;
+    
+    [Header("Dialogue UI References")]
+    [SerializeField] TextMeshProUGUI dialogueText;
+    [SerializeField] GameObject dialLeftArrow;
+    [SerializeField] GameObject dialRightArrow;
+    [SerializeField] GameObject dialBackground;
 
     public float test;
 
     int currentRound = -1;
     Bottle CurrentBottle;
     List<int> drankCharacterIDs;
+    string lastDialogue;
 
     private void Start()
     {
@@ -65,6 +73,12 @@ public class GameManager : MonoBehaviour
     {
         currentRound++;
         drankCharacterIDs = new List<int>();
+        
+        dialRightArrow.SetActive(false);
+        dialLeftArrow.SetActive(false);
+        dialBackground.SetActive(false);
+        dialogueText.gameObject.SetActive(false);
+        
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
         transitionTitle.text = "Service on";
@@ -117,12 +131,14 @@ public class GameManager : MonoBehaviour
     {
         transitionTitle.text = "Service off";
         Debug.Log("--- SERVICE OFF ---");
-
+        
+        dialBackground.SetActive(true);
+        dialogueText.gameObject.SetActive(true);
         
         for (int i = 0; i < drankCharacterIDs.Count; i++)
         {
             DisplayDialogue(drankCharacterIDs[i]);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(2f);
         }
         EndOfTurn();
     }
@@ -131,7 +147,18 @@ public class GameManager : MonoBehaviour
     {
         int characterDrankLevel = Mathf.CeilToInt(characters[characterID].currentDrinkAmount);
         string[] dialogueBag = GetDialoguesByDrankLevel(characterDrankLevel);
-        int dialogueIndex = Random.Range(0, dialogueBag.Length);
+
+        int dialogueIndex;
+        do
+        {
+            dialogueIndex = Random.Range(0, dialogueBag.Length);
+        } while (dialogueBag[dialogueIndex] == lastDialogue);
+        
+        lastDialogue = dialogueBag[dialogueIndex];
+        ToogleCharacter(characterID);
+        dialogueText.text = dialogueBag[dialogueIndex];
+        dialLeftArrow.SetActive(characterID % 2 == 0);
+        dialRightArrow.SetActive(characterID % 2 != 0);
         
         Debug.Log(dialogueBag[dialogueIndex]);
     }
@@ -206,10 +233,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        /*pauseCanvas.gameObject.SetActive(false);
-        endCanvas.gameObject.SetActive(false);
-        mainMenu.gameObject.SetActive(true);*/
-        //reset les valeurs / recharger la scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void PauseGame()
