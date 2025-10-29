@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
             }
             else if (chara.currentDrinkAmount >= chara.endDrinkThreshold)
             {
+                Debug.Log($"CHARACTER {charaCounter} is drunk!!");
                 GameIsLost();
                 return;
             }
