@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -206,10 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        pauseCanvas.gameObject.SetActive(false);
-        endCanvas.gameObject.SetActive(false);
-        mainMenu.gameObject.SetActive(true);
-        //reset les valeurs / recharger la scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void PauseGame()
