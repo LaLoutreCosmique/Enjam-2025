@@ -9,7 +9,7 @@ public class ClickableCharacter : MonoBehaviour, IPointerEnterHandler, IPointerE
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (!gm.canServe) return;
+        if (!gm.hasServiceStarted || !gm.CanServeCharacter(characterIndex)) return;
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -18,7 +18,7 @@ public class ClickableCharacter : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!gm.canServe) return;
+        if (!gm.hasServiceStarted || !gm.CanServeCharacter(characterIndex)) return;
         
         gm.ServeCharacter(characterIndex);
     }
