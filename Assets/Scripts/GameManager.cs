@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
                 sliders[charaCounter].value = Mathf.MoveTowards(sliders[charaCounter].value, characters[charaCounter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
             }
-            else if (chara.currentDrinkAmount >= chara.endDrinkTreshold) { GameIsLost(); }
+            else if (chara.currentDrinkAmount >= chara.endDrinkThreshold) { GameIsLost(); }
 
             chara.TimeSinceHasDrank += 1;
             charaCounter++;
