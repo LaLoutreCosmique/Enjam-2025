@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
                 sliders[charaCounter].value = Mathf.MoveTowards(sliders[charaCounter].value, characters[charaCounter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
             }
-            else if (chara.currentDrinkAmount >= chara.endDrinkTreshold) { GameIsLost(); }
+            else if (chara.currentDrinkAmount >= chara.endDrinkThreshold) { GameIsLost(); }
 
             chara.TimeSinceHasDrank += 1;
             charaCounter++;
@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
 
         foreach (string line in data)
         {
-            string[] col = line.Split(new [] { "," }, StringSplitOptions.None);
+            string[] col = line.Split(new [] { ";" }, StringSplitOptions.None);
             if (int.TryParse(col[0], out int drinkLevel))
             {
                 if (drinkLevel > newDialogueList.Count) newDialogueList.Add(new DialogueCategory());
@@ -161,21 +161,6 @@ public class GameManager : MonoBehaviour
         }
         
         dialogues = newDialogueList.ToArray();
-        
-        /*
-       List<DialogueData> newDialogues = new List<DialogueData>();
-
-       foreach (string line in data)
-       {
-           string[] col = line.Split(new [] { "," }, StringSplitOptions.None);
-           if (int.TryParse(col[0], out int drink))
-               newDialogues.Add(new DialogueData(drink, col[1].Replace("\"", "")));
-           else
-               newDialogues.Add(new DialogueData(-1, col[1].Replace("\"", "")));
-       }
-
-       dialogues = newDialogues.ToArray();
-       */
     }
 }
 
