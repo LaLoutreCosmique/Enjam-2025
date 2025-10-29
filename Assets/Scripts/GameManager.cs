@@ -18,10 +18,15 @@ public class GameManager : MonoBehaviour
     public Canvas endCanvas;
     public Canvas mainMenu;
     public Canvas gameCanvas;
+    public Canvas pauseCanvas;
     public Slider drankLevel;
 
     public float test;
 
+    private void Start()
+    {
+        drankLevel.interactable = false;
+    }
     private void LateUpdate()
     {
         drankLevel.value = Mathf.MoveTowards(drankLevel.value, test, Time.deltaTime / drankAnimationDuration);
@@ -84,6 +89,7 @@ public class GameManager : MonoBehaviour
     public void GameIsLost()
     {
         endCanvas.gameObject.SetActive(true);
+        gameCanvas.gameObject.SetActive(false);
     }
 
     public void StartGame()
@@ -94,9 +100,16 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        pauseCanvas.gameObject.SetActive(false);
         endCanvas.gameObject.SetActive(false);
         mainMenu.gameObject.SetActive(true);
         //reset les valeurs / recharger la scene
+    }
+
+    public void PauseGame()
+    {
+        gameCanvas.gameObject.SetActive(!gameCanvas.gameObject.activeSelf);
+        pauseCanvas.gameObject.SetActive(!pauseCanvas.gameObject.activeSelf);
     }
 
     public void CloseGame()
