@@ -32,11 +32,14 @@ public class GameManager : MonoBehaviour
     public Slider drankLevel;
     public Slider[] sliders;
     public GameObject[] charactersOnTheRight;
+    public Slider[] slidersClone;
+    public Canvas winCanvas;
+    
+    [Header("Dialogue UI References")]
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject dialLeftArrow;
     [SerializeField] GameObject dialRightArrow;
-    public Slider[] slidersClone;
-    public Canvas winCanvas;
+    [SerializeField] GameObject dialBackground;
 
     public float test;
 
@@ -70,6 +73,12 @@ public class GameManager : MonoBehaviour
     {
         currentRound++;
         drankCharacterIDs = new List<int>();
+        
+        dialRightArrow.SetActive(false);
+        dialLeftArrow.SetActive(false);
+        dialBackground.SetActive(false);
+        dialogueText.gameObject.SetActive(false);
+        
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
         transitionTitle.text = "Service on";
@@ -122,6 +131,9 @@ public class GameManager : MonoBehaviour
     {
         transitionTitle.text = "Service off";
         Debug.Log("--- SERVICE OFF ---");
+        
+        dialBackground.SetActive(true);
+        dialogueText.gameObject.SetActive(true);
         
         for (int i = 0; i < drankCharacterIDs.Count; i++)
         {
