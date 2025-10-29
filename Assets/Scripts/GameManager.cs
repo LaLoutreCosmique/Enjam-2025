@@ -18,7 +18,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] int[] dialogueStepTriggers;
     [SerializeField] DialogueCategory[] dialogues;
     [SerializeField] int winThreshold;
+    [SerializeField] float totalChaos;
     private float drankAnimationDuration = 5f;
+    
     
     [Header("UI References")]
     [SerializeField] TextMeshProUGUI transitionTitle;
@@ -29,6 +31,8 @@ public class GameManager : MonoBehaviour
     public Slider drankLevel;
     public Slider[] sliders;
     public GameObject[] charactersOnTheRight;
+    public Slider[] slidersClone;
+    public Canvas winCanvas;
 
     public float test;
 
@@ -41,17 +45,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartServiceRoutine());
         drankLevel.interactable = false;
         foreach (Slider slider in sliders) { slider.interactable = false; }
+        foreach (Slider slider in slidersClone) { slider.interactable = false; }
     }
 
     private void LateUpdate()
     {
-        drankLevel.value = Mathf.MoveTowards(drankLevel.value, test, Time.deltaTime / drankAnimationDuration);
+        drankLevel.value = Mathf.MoveTowards(drankLevel.value, totalChaos, Time.deltaTime / 1f);
         int sliderIndex = 0;
         foreach (Slider slider in sliders)
         {
             slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount/10, Time.deltaTime / drankAnimationDuration);
             sliderIndex++;
         }
+        int sliderCloneIndex = 0;
+        foreach (Slider slider in slidersClone) { slider.value = sliders[sliderCloneIndex].value; sliderCloneIndex++; }
     }
 
     IEnumerator StartServiceRoutine()
@@ -69,6 +76,7 @@ public class GameManager : MonoBehaviour
     {
         ToogleCharacter(indexCharacter);
         characters[indexCharacter].currentDrinkAmount += CurrentBottle.drinkValue;
+        totalChaos += CurrentBottle.drinkValue;
         characters[indexCharacter].TimeSinceHasDrank = 0;
         sliders[indexCharacter].value = Mathf.MoveTowards(sliders[indexCharacter].value, characters[indexCharacter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
         CurrentBottle.servingSize--;
@@ -148,12 +156,18 @@ public class GameManager : MonoBehaviour
             if (chara.TimeSinceHasDrank >= chara.timeToSober)
             {
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
+                totalChaos -= chara.soberUpMultiplier;
                 sliders[charaCounter].value = Mathf.MoveTowards(sliders[charaCounter].value, characters[charaCounter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
             }
             else if (chara.currentDrinkAmount >= chara.endDrinkThreshold)
             {
                 Debug.Log($"CHARACTER {charaCounter} is drunk!!");
                 GameIsLost();
+                return;
+            }
+            if(totalChaos >= winThreshold)
+            {
+                winCanvas.gameObject.SetActive(true);
                 return;
             }
 
@@ -192,9 +206,9 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        pauseCanvas.gameObject.SetActive(false);
+        /*pauseCanvas.gameObject.SetActive(false);
         endCanvas.gameObject.SetActive(false);
-        mainMenu.gameObject.SetActive(true);
+        mainMenu.gameObject.SetActive(true);*/
         //reset les valeurs / recharger la scene
     }
 
