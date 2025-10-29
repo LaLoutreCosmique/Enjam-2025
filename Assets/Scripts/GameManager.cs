@@ -1,20 +1,26 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public bool hasServiceStarted;
+    
     [Header("Parameters")]
     [SerializeField] Character[] characters;
-    [SerializeField] Bottles[] bottles;
-    [SerializeField] DialogueData[] dialogues;
-    private int winTreshold;
-    [HideInInspector]
-    public Bottles currentBottle;
+    [SerializeField] Bottle[] bottles;
+    [SerializeField] int[] dialogueStepTriggers;
+    [SerializeField] DialogueCategory[] dialogues;
+    [SerializeField] int winThreshold;
     private float drankAnimationDuration = 5f;
-
-    [Header("Réfécences")]
+    
+    [Header("UI References")]
+    [SerializeField] TextMeshProUGUI transitionTitle;
     public Canvas endCanvas;
     public Canvas mainMenu;
     public Canvas gameCanvas;
@@ -24,51 +30,61 @@ public class GameManager : MonoBehaviour
 
     public float test;
 
+    int currentRound = -1;
+    Bottle CurrentBottle;
+    List<int> drankCharacterIDs;
+
     private void Start()
     {
+        StartCoroutine(StartServiceRoutine());
         drankLevel.interactable = false;
         foreach (Slider slider in sliders) { slider.interactable = false; }
     }
+
     private void LateUpdate()
     {
         drankLevel.value = Mathf.MoveTowards(drankLevel.value, test, Time.deltaTime / drankAnimationDuration);
     }
 
-    [System.Serializable]
-    public class Character
+    IEnumerator StartServiceRoutine()
     {
-        [HideInInspector]
-        public float currentDrinkAmount;
-        public int endDrinkTreshold;
-        [HideInInspector]
-        public int TimeSinceHasDrank;
-        private Dictionary<int, string> dialogueByTreshold;
-        public float soberUpMultiplier;
-        public int timeToSober;
+        currentRound++;
+        drankCharacterIDs = new List<int>();
+        ChangeBottle();
+        yield return new WaitForSeconds(0.5f);
+        transitionTitle.text = "Service";
+        hasServiceStarted = true;
     }
-
-    [SerializeField]
-    public class Bottles
-    {
-        public  int drinkValue;
-        public int servingSize;
-        private Sprite visual;
-    }
-
 
     public void ServeCharacter(int indexCharacter)
     {
-        characters[indexCharacter].currentDrinkAmount += currentBottle.drinkValue;
+        characters[indexCharacter].currentDrinkAmount += CurrentBottle.drinkValue;
         characters[indexCharacter].TimeSinceHasDrank = 0;
         sliders[indexCharacter].value = Mathf.MoveTowards(sliders[indexCharacter].value, characters[indexCharacter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
-        currentBottle.servingSize -= 1;
-        if(currentBottle.servingSize == 0)
+        CurrentBottle.servingSize--;
+        drankCharacterIDs.Add(indexCharacter);
+        
+        if (CurrentBottle.servingSize == 0)
+            StartCoroutine(EndServiceRoutine());
+    }
+
+    // Character dialogues
+    IEnumerator EndServiceRoutine()
+    {
+        for (int i = 0; i < drankCharacterIDs.Count; i++)
         {
-            ChangeBottle();
+            DisplayDialogue(characters[drankCharacterIDs[i]]);
+            yield return new WaitForSeconds(1f);
         }
     }
 
-    public void EndOfTurn ()
+    void DisplayDialogue(Character character)
+    {
+        
+        //Debug.Log();
+    }
+
+    public void EndOfTurn()
     {
         int charaCounter = 0;
         foreach (Character chara in characters)
@@ -85,11 +101,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    public void ChangeBottle()
+    void ChangeBottle()
     {
-        currentBottle = new Bottles();
-        //Play animation
+        CurrentBottle = bottles[currentRound];
+        // Animation
     }
 
     public void GameIsLost()
@@ -123,34 +138,67 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
     
+    public bool CanServeCharacter(int characterID)
+    {
+        return !drankCharacterIDs.Contains(characterID);
+    }
+    
     [ContextMenu("SetDialogues")]
     void SetDialogues()
     {
         TextAsset rawDialogues = Resources.Load<TextAsset>("Dialogues");
         string[] data = rawDialogues.text.Split(new [] { "\n" }, StringSplitOptions.None);
-        List<DialogueData> newDialogues = new List<DialogueData>();
+        List<DialogueCategory> newDialogueList = new();
+
         foreach (string line in data)
         {
             string[] col = line.Split(new [] { "," }, StringSplitOptions.None);
-            if (int.TryParse(col[0], out int drink))
-                newDialogues.Add(new DialogueData(drink, col[1].Replace("\"", "")));
-            else
-                newDialogues.Add(new DialogueData(-1, col[1].Replace("\"", "")));
+            if (int.TryParse(col[0], out int drinkLevel))
+            {
+                if (drinkLevel > newDialogueList.Count) newDialogueList.Add(new DialogueCategory());
+                newDialogueList[drinkLevel-1].textList.Add(col[1].Replace("\"", ""));
+            }
         }
         
-        dialogues = newDialogues.ToArray();
+        dialogues = newDialogueList.ToArray();
+        
+        /*
+       List<DialogueData> newDialogues = new List<DialogueData>();
+
+       foreach (string line in data)
+       {
+           string[] col = line.Split(new [] { "," }, StringSplitOptions.None);
+           if (int.TryParse(col[0], out int drink))
+               newDialogues.Add(new DialogueData(drink, col[1].Replace("\"", "")));
+           else
+               newDialogues.Add(new DialogueData(-1, col[1].Replace("\"", "")));
+       }
+
+       dialogues = newDialogues.ToArray();
+       */
     }
 }
 
 [System.Serializable]
-public struct DialogueData
+public class Character
 {
-    public int drinkAmount;
-    public string text;
+    [HideInInspector] public float currentDrinkAmount;
+    [HideInInspector] public int TimeSinceHasDrank;
+    public int endDrinkThreshold;
+    public float soberUpMultiplier;
+    public int timeToSober;
+}
 
-    public DialogueData(int drinkAmount, string text)
-    {
-        this.drinkAmount = drinkAmount;
-        this.text = text;
-    }
+[System.Serializable]
+public struct Bottle
+{
+    public  int drinkValue;
+    public int servingSize;
+    private Sprite visual;
+}
+
+[System.Serializable]
+public class DialogueCategory
+{
+    public List<string> textList = new ();
 }
