@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         int sliderIndex = 0;
         foreach (Slider slider in sliders)
         {
-            slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount/10, Time.deltaTime / drankAnimationDuration);
+            slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount / characters[sliderIndex].endDrinkThreshold, Time.deltaTime / drankAnimationDuration);
             sliderIndex++;
         }
         int sliderCloneIndex = 0;
@@ -242,10 +242,7 @@ public class GameManager : MonoBehaviour
         
         if (currentRound + 1 >= bottles.Length)
         {
-            Debug.Log("WIN GG");
-            Debug.Log($"Round : {currentRound} - Total bottles : {bottles.Length}");
-            GameIsLost(); // TODO: win condition
-            return;
+            currentRound = 0;
         }
         
         StartCoroutine(StartServiceRoutine());
@@ -317,7 +314,7 @@ public class Character
 {
     [HideInInspector] public float currentDrinkAmount;
     [HideInInspector] public int TimeSinceHasDrank;
-    public int endDrinkThreshold;
+    public float endDrinkThreshold;
     public float soberUpMultiplier;
     public int timeToSober;
 }

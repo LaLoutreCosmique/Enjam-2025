@@ -264,18 +264,18 @@ MonoBehaviour:
   characters:
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 2
+    endDrinkThreshold: 15
     soberUpMultiplier: 1
-    timeToSober: 1
+    timeToSober: 2
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
     endDrinkThreshold: 10
-    soberUpMultiplier: 1
-    timeToSober: 1
+    soberUpMultiplier: 2
+    timeToSober: 2
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 10
-    soberUpMultiplier: 1
+    endDrinkThreshold: 7
+    soberUpMultiplier: 1.5
     timeToSober: 1
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
@@ -350,11 +350,13 @@ MonoBehaviour:
   - {fileID: 252711950}
   - {fileID: 1010007701}
   winCanvas: {fileID: 7822008720342300611}
+  glassToFill: {fileID: 1244431238}
   audiosource: {fileID: 381912354680367708}
   hoquetHomme1: {fileID: 8300000, guid: 70982f7b3836e5e479fd842f76b997a7, type: 3}
   hoquetHomme2: {fileID: 8300000, guid: 787c8351d5d80e841b57d864decc2ccc, type: 3}
   hoquetFemme1: {fileID: 8300000, guid: 7a6a5d0d3d94b5c44a6f9d8b729f2e9d, type: 3}
   hoquetFemme2: {fileID: 8300000, guid: adc0988da45591c418d4dfbd913d263e, type: 3}
+  soundMana: {fileID: 381912354680367707}
   dialogueText: {fileID: 2406760527538924802}
   dialLeftArrow: {fileID: 2406760527538924801}
   dialRightArrow: {fileID: 2406760527538924800}
@@ -914,6 +916,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!114 &1244431238 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8468888023553367400, guid: 774d7a33ce08f134282b35cd4e80ee51, type: 3}
+  m_PrefabInstance: {fileID: 2406760527538924798}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!114 &1272939060 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3234724354316763757, guid: 774d7a33ce08f134282b35cd4e80ee51, type: 3}
@@ -1912,6 +1925,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 3980355218553678271, guid: 846273f47bff3c04285c90cf79648355, type: 3}
+      propertyPath: playButton
+      value: 
+      objectReference: {fileID: 8300000, guid: 3d4698b0af0f9d54192befb1ce0d9aff, type: 3}
+    - target: {fileID: 3980355218553678271, guid: 846273f47bff3c04285c90cf79648355, type: 3}
+      propertyPath: vinVerser1
+      value: 
+      objectReference: {fileID: 8300000, guid: a444f13974a38594a8e697551f7ecc97, type: 3}
+    - target: {fileID: 3980355218553678271, guid: 846273f47bff3c04285c90cf79648355, type: 3}
+      propertyPath: vinVerser2
+      value: 
+      objectReference: {fileID: 8300000, guid: 554554b22f74254439019ab4ce0e9eca, type: 3}
+    - target: {fileID: 3980355218553678271, guid: 846273f47bff3c04285c90cf79648355, type: 3}
+      propertyPath: audiosource
+      value: 
+      objectReference: {fileID: 381912354680367708}
     - target: {fileID: 5378016412475421402, guid: 846273f47bff3c04285c90cf79648355, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

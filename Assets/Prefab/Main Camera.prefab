@@ -396,8 +396,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManagement
   audiosource: {fileID: 0}
-  playButton: {fileID: 0}
+  playButton: {fileID: 8300000, guid: 3d4698b0af0f9d54192befb1ce0d9aff, type: 3}
   turnAround1: {fileID: 0}
   turnAround2: {fileID: 0}
-  vinVerser1: {fileID: 0}
-  vinVerser2: {fileID: 0}
+  vinVerser1: {fileID: 8300000, guid: a444f13974a38594a8e697551f7ecc97, type: 3}
+  vinVerser2: {fileID: 8300000, guid: 554554b22f74254439019ab4ce0e9eca, type: 3}
