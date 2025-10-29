@@ -46,6 +46,12 @@ public class GameManager : MonoBehaviour
     private void LateUpdate()
     {
         drankLevel.value = Mathf.MoveTowards(drankLevel.value, test, Time.deltaTime / drankAnimationDuration);
+        int sliderIndex = 0;
+        foreach (Slider slider in sliders)
+        {
+            slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount/10, Time.deltaTime / drankAnimationDuration);
+            sliderIndex++;
+        }
     }
 
     IEnumerator StartServiceRoutine()
