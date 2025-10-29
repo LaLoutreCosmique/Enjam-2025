@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
         transitionTitle.text = "Service on";
+        Debug.Log("--- SERVICE ON ---");
         hasServiceStarted = true;
     }
 
@@ -75,6 +76,8 @@ public class GameManager : MonoBehaviour
     IEnumerator EndServiceRoutine()
     {
         transitionTitle.text = "Service off";
+        Debug.Log("--- SERVICE OFF ---");
+
         
         for (int i = 0; i < drankCharacterIDs.Count; i++)
         {
@@ -86,7 +89,23 @@ public class GameManager : MonoBehaviour
 
     void DisplayDialogue(int characterID)
     {
-        Debug.Log("blabla");
+        int characterDrankLevel = Mathf.CeilToInt(characters[characterID].currentDrinkAmount);
+        string[] dialogueBag = GetDialoguesByDrankLevel(characterDrankLevel);
+        int dialogueIndex = Random.Range(0, dialogueBag.Length);
+        
+        Debug.Log(dialogueBag[dialogueIndex]);
+    }
+    
+    string[] GetDialoguesByDrankLevel(int characterDrankLevel)
+    {
+        int selected = 0;
+        foreach (int stepTrigger in dialogueStepTriggers)
+        {
+            if (stepTrigger <= selected) break;
+            selected = stepTrigger;
+        }
+
+        return dialogues[selected-1].textList.ToArray();
     }
 
     public void EndOfTurn()
@@ -104,18 +123,20 @@ public class GameManager : MonoBehaviour
                 GameIsLost();
                 return;
             }
-            
-            if (currentRound + 1 >= bottles.Length)
-            {
-                Debug.Log("WIN GG");
-                GameIsLost(); // TODO: win condition
-                return;
-            }
 
             chara.TimeSinceHasDrank += 1;
             charaCounter++;
-            StartCoroutine(StartServiceRoutine());
         }
+        
+        if (currentRound + 1 >= bottles.Length)
+        {
+            Debug.Log("WIN GG");
+            Debug.Log($"Round : {currentRound} - Total bottles : {bottles.Length}");
+            GameIsLost(); // TODO: win condition
+            return;
+        }
+        
+        StartCoroutine(StartServiceRoutine());
     }
 
     void ChangeBottle()
