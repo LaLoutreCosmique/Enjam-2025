@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] charactersOnTheRight;
     public Slider[] slidersClone;
     public Canvas winCanvas;
+    [SerializeField] TextMeshProUGUI glassToFill;
     
     [Header("Dialogue UI References")]
     [SerializeField] TextMeshProUGUI dialogueText;
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
     Bottle CurrentBottle;
     List<int> drankCharacterIDs;
     string lastDialogue;
+    const string GLASS_TO_FILL = "Verres à remplir : ";
 
     private void Start()
     {
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
         
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
-        transitionTitle.text = "Service on";
+        transitionTitle.text = "SERVEZ !!";
         Debug.Log("--- SERVICE ON ---");
         hasServiceStarted = true;
     }
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour
         sliders[indexCharacter].value = Mathf.MoveTowards(sliders[indexCharacter].value, characters[indexCharacter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
         CurrentBottle.servingSize--;
         drankCharacterIDs.Add(indexCharacter);
+        glassToFill.text = GLASS_TO_FILL + CurrentBottle.servingSize;
         
         Debug.Log(indexCharacter + "has drank: " + characters[indexCharacter].currentDrinkAmount);
         
@@ -129,7 +132,7 @@ public class GameManager : MonoBehaviour
     // Character dialogues
     IEnumerator EndServiceRoutine()
     {
-        transitionTitle.text = "Service off";
+        transitionTitle.text = "Attendez...";
         Debug.Log("--- SERVICE OFF ---");
         
         dialBackground.SetActive(true);
@@ -216,6 +219,7 @@ public class GameManager : MonoBehaviour
     void ChangeBottle()
     {
         CurrentBottle = bottles[currentRound];
+        glassToFill.text = GLASS_TO_FILL + CurrentBottle.servingSize;
         // Animation
     }
 
