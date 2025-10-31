@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     public Canvas pauseCanvas;
     public Slider drankLevel;
     public Slider[] sliders;
-    public GameObject[] charactersOnTheRight;
     public Slider[] slidersClone;
     public Canvas winCanvas;
     [SerializeField] TextMeshProUGUI glassToFill;
@@ -40,10 +39,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject dialLeftArrow;
     [SerializeField] GameObject dialRightArrow;
-    [SerializeField] GameObject dialBackground;
-
-    public float test;
-
+    [SerializeField] GameObject[] dialogueBackgrounds;
+    
+    [Header("Right screen References")]
+    [SerializeField] GameObject upView;
+    [SerializeField] GameObject upViewDial;
+    [SerializeField] GameObject downView;
+    [SerializeField] GameObject downViewDial;
+    
     int currentRound = -1;
     Bottle CurrentBottle;
     List<int> drankCharacterIDs;
@@ -52,6 +55,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        ClearDialogue();
         StartCoroutine(StartServiceRoutine());
         drankLevel.interactable = false;
         foreach (Slider slider in sliders) { slider.interactable = false; }
@@ -75,12 +79,6 @@ public class GameManager : MonoBehaviour
     {
         currentRound++;
         drankCharacterIDs = new List<int>();
-        
-        dialRightArrow.SetActive(false);
-        dialLeftArrow.SetActive(false);
-        dialBackground.SetActive(false);
-        dialogueText.gameObject.SetActive(false);
-        
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
         transitionTitle.text = "SERVEZ !!";
@@ -105,27 +103,61 @@ public class GameManager : MonoBehaviour
             StartCoroutine(EndServiceRoutine());
     }
 
-    public void ToogleCharacter(int indexCharacter)
+    void ClearDialogue(bool hideText = true)
     {
+        dialRightArrow.SetActive(false);
+        dialLeftArrow.SetActive(false);
+        foreach (GameObject background in dialogueBackgrounds)
+        {
+            background.SetActive(false);
+        }
+
+        if (hideText)
+            dialogueText.gameObject.SetActive(false);
+    }
+
+    public void ToogleCharacter(int indexCharacter, bool dial = false)
+    {
+        ClearDialogue(!dial);
+        
         if (indexCharacter < 2)
         {
-            charactersOnTheRight[0].SetActive(true);
-            charactersOnTheRight[1].SetActive(true);
-            charactersOnTheRight[2].SetActive(false);
-            charactersOnTheRight[3].SetActive(false);
+            if (dial)
+            {
+                upView.SetActive(false);
+                upViewDial.SetActive(true);
+                downView.SetActive(false);
+                downViewDial.SetActive(false);
+            }
+            else
+            {
+                upView.SetActive(true);
+                upViewDial.SetActive(false);
+                downView.SetActive(false);
+                downViewDial.SetActive(false);
+            }
         }
         else
         {
-            charactersOnTheRight[0].SetActive(false);
-            charactersOnTheRight[1].SetActive(false);
-            charactersOnTheRight[2].SetActive(true);
-            charactersOnTheRight[3].SetActive(true);
+            if (dial)
+            {
+                upView.SetActive(false);
+                upViewDial.SetActive(false);
+                downView.SetActive(false);
+                downViewDial.SetActive(true);
+            }
+            else
+            {
+                upView.SetActive(false);
+                upViewDial.SetActive(false);
+                downView.SetActive(true);
+                downViewDial.SetActive(false);
+            }
         }
-        int x = 0;
+        
         foreach (Slider slider in sliders)
         {
-            slider.gameObject.SetActive(charactersOnTheRight[x].activeSelf);
-            x++;
+            slider.gameObject.SetActive(indexCharacter % 2 == 0);
         }
     }
 
@@ -135,7 +167,6 @@ public class GameManager : MonoBehaviour
         transitionTitle.text = "Attendez...";
         Debug.Log("--- SERVICE OFF ---");
         
-        dialBackground.SetActive(true);
         dialogueText.gameObject.SetActive(true);
         
         for (int i = 0; i < drankCharacterIDs.Count; i++)
@@ -158,10 +189,16 @@ public class GameManager : MonoBehaviour
         } while (dialogueBag[dialogueIndex] == lastDialogue);
         
         lastDialogue = dialogueBag[dialogueIndex];
-        ToogleCharacter(characterID);
+        ToogleCharacter(characterID, true);
         dialogueText.text = dialogueBag[dialogueIndex];
         dialLeftArrow.SetActive(characterID % 2 == 0);
         dialRightArrow.SetActive(characterID % 2 != 0);
+
+        foreach (GameObject background in dialogueBackgrounds)
+        {
+            background.SetActive(false);
+        }
+        dialogueBackgrounds[characterID].SetActive(true);
         
         Debug.Log(dialogueBag[dialogueIndex]);
     }
