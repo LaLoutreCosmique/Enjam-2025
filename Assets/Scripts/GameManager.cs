@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -35,6 +36,15 @@ public class GameManager : MonoBehaviour
     public Canvas winCanvas;
     [SerializeField] TextMeshProUGUI glassToFill;
     
+
+    [Header("Sound References")]
+    public AudioSource audiosource;
+    public AudioClip hoquetHomme1;
+    public AudioClip hoquetHomme2;
+    public AudioClip hoquetFemme1;
+    public AudioClip hoquetFemme2;
+    public SoundManagement soundMana;
+
     [Header("Dialogue UI References")]
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] GameObject dialLeftArrow;
@@ -68,7 +78,7 @@ public class GameManager : MonoBehaviour
         int sliderIndex = 0;
         foreach (Slider slider in sliders)
         {
-            slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount/10, Time.deltaTime / drankAnimationDuration);
+            slider.value = Mathf.MoveTowards(slider.value, characters[sliderIndex].currentDrinkAmount / characters[sliderIndex].endDrinkThreshold, Time.deltaTime / drankAnimationDuration);
             sliderIndex++;
         }
         int sliderCloneIndex = 0;
@@ -96,6 +106,7 @@ public class GameManager : MonoBehaviour
         CurrentBottle.servingSize--;
         drankCharacterIDs.Add(indexCharacter);
         glassToFill.text = GLASS_TO_FILL + CurrentBottle.servingSize;
+        soundMana.VerserVin();
         
         Debug.Log(indexCharacter + "has drank: " + characters[indexCharacter].currentDrinkAmount);
         
@@ -177,10 +188,34 @@ public class GameManager : MonoBehaviour
         EndOfTurn();
     }
 
+    void hips(int drankLevel)
+    {
+        float chance = 0f;
+
+        if (drankLevel == 1) chance = 0.25f;
+        else if (drankLevel == 2) chance = 0.5f;
+        else if (drankLevel == 3) chance = 0.75f;
+
+        if (Random.value < chance)
+        {
+            int x = Random.Range(0, 4);
+            if (x == 0)
+            {
+                audiosource.clip = hoquetFemme1;
+            }
+            else if (x == 1) { audiosource.clip = hoquetHomme1; }
+            else if (x == 2) { audiosource.clip = hoquetFemme2; }
+            else { audiosource.clip = hoquetHomme2; }
+            audiosource.Play();
+        }
+    }
+
     void DisplayDialogue(int characterID)
     {
         int characterDrankLevel = Mathf.CeilToInt(characters[characterID].currentDrinkAmount);
         string[] dialogueBag = GetDialoguesByDrankLevel(characterDrankLevel);
+        hips(characterDrankLevel);
+
 
         int dialogueIndex;
         do
@@ -244,10 +279,7 @@ public class GameManager : MonoBehaviour
         
         if (currentRound + 1 >= bottles.Length)
         {
-            Debug.Log("WIN GG");
-            Debug.Log($"Round : {currentRound} - Total bottles : {bottles.Length}");
-            GameIsLost(); // TODO: win condition
-            return;
+            currentRound = 0;
         }
         
         StartCoroutine(StartServiceRoutine());
@@ -319,7 +351,7 @@ public class Character
 {
     [HideInInspector] public float currentDrinkAmount;
     [HideInInspector] public int TimeSinceHasDrank;
-    public int endDrinkThreshold;
+    public float endDrinkThreshold;
     public float soberUpMultiplier;
     public int timeToSober;
 }
