@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4ef352ab48dafb64fa99aa9a45117c11
+guid: 30ce5f65fd77a4a4b9d62acc0658972f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2349801772559294351
-    second: FAKESCREEN_0
+      213: 9216978697900372843
+    second: JAUGE_CHAOS_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FAKESCREEN_0
+      name: JAUGE_CHAOS_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1081
+        x: 31
+        y: 55
+        width: 197
+        height: 969
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1702506dcb3d36fd0800000000000000
-      internalID: -2349801772559294351
+      spriteID: b63b1b6ca4949ef70800000000000000
+      internalID: 9216978697900372843
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FAKESCREEN_0: -2349801772559294351
+      JAUGE_CHAOS_0: 9216978697900372843
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

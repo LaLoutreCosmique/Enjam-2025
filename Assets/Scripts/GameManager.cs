@@ -47,8 +47,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Dialogue UI References")]
     [SerializeField] TextMeshProUGUI dialogueText;
-    [SerializeField] GameObject dialLeftArrow;
-    [SerializeField] GameObject dialRightArrow;
     [SerializeField] GameObject[] dialogueBackgrounds;
     
     [Header("Right screen References")]
@@ -59,7 +57,7 @@ public class GameManager : MonoBehaviour
     
     int currentRound = -1;
     Bottle CurrentBottle;
-    List<int> drankCharacterIDs;
+    List<ClickableCharacter> drankCharacters;
     string lastDialogue;
     const string GLASS_TO_FILL = "Verres à remplir : ";
 
@@ -88,7 +86,7 @@ public class GameManager : MonoBehaviour
     IEnumerator StartServiceRoutine()
     {
         currentRound++;
-        drankCharacterIDs = new List<int>();
+        drankCharacters = new List<ClickableCharacter>();
         ChangeBottle();
         yield return new WaitForSeconds(0.5f);
         transitionTitle.text = "SERVEZ !!";
@@ -96,19 +94,15 @@ public class GameManager : MonoBehaviour
         hasServiceStarted = true;
     }
 
-    public void ServeCharacter(int indexCharacter)
+    public void ServeCharacter(ClickableCharacter character)
     {
-        ToogleCharacter(indexCharacter);
-        characters[indexCharacter].currentDrinkAmount += CurrentBottle.drinkValue;
-        totalChaos += CurrentBottle.drinkValue;
-        characters[indexCharacter].TimeSinceHasDrank = 0;
-        sliders[indexCharacter].value = Mathf.MoveTowards(sliders[indexCharacter].value, characters[indexCharacter].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
+        ToggleCharacter(character.characterIndex);
         CurrentBottle.servingSize--;
-        drankCharacterIDs.Add(indexCharacter);
+        drankCharacters.Add(character);
         glassToFill.text = GLASS_TO_FILL + CurrentBottle.servingSize;
         soundMana.VerserVin();
         
-        Debug.Log(indexCharacter + "has drank: " + characters[indexCharacter].currentDrinkAmount);
+        Debug.Log(character.name + "has drank: " + characters[character.characterIndex].currentDrinkAmount);
         
         if (CurrentBottle.servingSize == 0)
             StartCoroutine(EndServiceRoutine());
@@ -116,8 +110,6 @@ public class GameManager : MonoBehaviour
 
     void ClearDialogue(bool hideText = true)
     {
-        dialRightArrow.SetActive(false);
-        dialLeftArrow.SetActive(false);
         foreach (GameObject background in dialogueBackgrounds)
         {
             background.SetActive(false);
@@ -127,7 +119,7 @@ public class GameManager : MonoBehaviour
             dialogueText.gameObject.SetActive(false);
     }
 
-    public void ToogleCharacter(int indexCharacter, bool dial = false)
+    public void ToggleCharacter(int indexCharacter, bool dial = false)
     {
         ClearDialogue(!dial);
         
@@ -165,10 +157,10 @@ public class GameManager : MonoBehaviour
                 downViewDial.SetActive(false);
             }
         }
-        
-        foreach (Slider slider in sliders)
+
+        for (int i = 0; i < sliders.Length; i++)
         {
-            slider.gameObject.SetActive(indexCharacter % 2 == 0);
+            sliders[i].gameObject.SetActive(indexCharacter == i);
         }
     }
 
@@ -177,12 +169,18 @@ public class GameManager : MonoBehaviour
     {
         transitionTitle.text = "Attendez...";
         Debug.Log("--- SERVICE OFF ---");
+        hasServiceStarted = false;
         
         dialogueText.gameObject.SetActive(true);
         
-        for (int i = 0; i < drankCharacterIDs.Count; i++)
+        for (int i = 0; i < drankCharacters.Count; i++)
         {
-            DisplayDialogue(drankCharacterIDs[i]);
+            DisplayDialogue(drankCharacters[i].characterIndex);
+            characters[drankCharacters[i].characterIndex].currentDrinkAmount += CurrentBottle.drinkValue;
+            totalChaos += CurrentBottle.drinkValue;
+            characters[drankCharacters[i].characterIndex].TimeSinceHasDrank = 0;
+            sliders[drankCharacters[i].characterIndex].value = Mathf.MoveTowards(sliders[drankCharacters[i].characterIndex].value, characters[drankCharacters[i].characterIndex].currentDrinkAmount, Time.deltaTime / drankAnimationDuration);
+
             yield return new WaitForSeconds(2f);
         }
         EndOfTurn();
@@ -224,10 +222,8 @@ public class GameManager : MonoBehaviour
         } while (dialogueBag[dialogueIndex] == lastDialogue);
         
         lastDialogue = dialogueBag[dialogueIndex];
-        ToogleCharacter(characterID, true);
+        ToggleCharacter(characterID, true);
         dialogueText.text = dialogueBag[dialogueIndex];
-        dialLeftArrow.SetActive(characterID % 2 == 0);
-        dialRightArrow.SetActive(characterID % 2 != 0);
 
         foreach (GameObject background in dialogueBackgrounds)
         {
@@ -281,7 +277,11 @@ public class GameManager : MonoBehaviour
         {
             currentRound = 0;
         }
-        
+
+        foreach (ClickableCharacter character in drankCharacters)
+        {
+            character.Deselect();
+        }
         StartCoroutine(StartServiceRoutine());
     }
 
@@ -318,11 +318,6 @@ public class GameManager : MonoBehaviour
     public void CloseGame()
     {
         Application.Quit();
-    }
-    
-    public bool CanServeCharacter(int characterID)
-    {
-        return !drankCharacterIDs.Contains(characterID);
     }
     
     [ContextMenu("SetDialogues")]
