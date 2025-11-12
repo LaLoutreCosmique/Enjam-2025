@@ -34,7 +34,9 @@ public class GameManager : MonoBehaviour
     public Slider[] sliders;
     public Slider[] slidersClone;
     public Canvas winCanvas;
+    [SerializeField] GameObject bottleInfo;
     [SerializeField] TextMeshProUGUI glassToFill;
+    [SerializeField] TextMeshProUGUI alcoolRateTxt;
     
 
     [Header("Sound References")]
@@ -171,6 +173,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("--- SERVICE OFF ---");
         hasServiceStarted = false;
         
+        bottleInfo.SetActive(false);
         dialogueText.gameObject.SetActive(true);
         
         for (int i = 0; i < drankCharacters.Count; i++)
@@ -289,7 +292,9 @@ public class GameManager : MonoBehaviour
     {
         CurrentBottle = bottles[currentRound];
         glassToFill.text = GLASS_TO_FILL + CurrentBottle.servingSize;
+        SetAlcoolRateText();
         // Animation
+        bottleInfo.SetActive(true);
     }
 
     public void GameIsLost()
@@ -338,6 +343,29 @@ public class GameManager : MonoBehaviour
         }
         
         dialogues = newDialogueList.ToArray();
+    }
+
+    private void SetAlcoolRateText()
+    {
+        string rate = "";
+
+        switch (CurrentBottle.drinkValue)
+        {
+            case 1:
+                rate = "léger";
+                break;
+            case 2:
+                rate = "moyen";
+                break;
+            case 3:
+                rate = "fort";
+                break;
+            default:
+                rate = "très fort";
+                break;
+        }
+        
+        alcoolRateTxt.text = "Taux d'alcool : " + rate;
     }
 }
 

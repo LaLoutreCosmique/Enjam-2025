@@ -351,7 +351,9 @@ MonoBehaviour:
   - {fileID: 643316672}
   - {fileID: 1316923727}
   winCanvas: {fileID: 7822008720342300611}
+  bottleInfo: {fileID: 850164921}
   glassToFill: {fileID: 1244431238}
+  alcoolRateTxt: {fileID: 323022545}
   audiosource: {fileID: 381912354680367708}
   hoquetHomme1: {fileID: 8300000, guid: 70982f7b3836e5e479fd842f76b997a7, type: 3}
   hoquetHomme2: {fileID: 8300000, guid: 787c8351d5d80e841b57d864decc2ccc, type: 3}
@@ -383,6 +385,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323022545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6502122735408745379, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+  m_PrefabInstance: {fileID: 8090660124991600989}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!223 &569120959 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 25493429567683341, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
@@ -403,6 +416,11 @@ MonoBehaviour:
 AudioListener:
   m_CorrespondingSourceObject: {fileID: 6371318379453781562, guid: 846273f47bff3c04285c90cf79648355, type: 3}
   m_PrefabInstance: {fileID: 381912354680367706}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &850164921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6582300576599636154, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+  m_PrefabInstance: {fileID: 8090660124991600989}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &976402376 stripped
 MonoBehaviour:
@@ -676,6 +694,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 209272308}
+    - target: {fileID: 1636353934862755387, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 502.6475
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636353934862755387, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -390
+      objectReference: {fileID: 0}
+    - target: {fileID: 1636353934862755387, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 19
+      objectReference: {fileID: 0}
     - target: {fileID: 2303575651797365547, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 548.7788
@@ -716,6 +746,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2373702447141567873, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2742668737110786649, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 423.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2896252371736200629, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3739424889015079809, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -740,6 +782,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 381912354680367707}
+    - target: {fileID: 4583018929200672722, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651514932745012366, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5413374500012558067, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -760,6 +810,30 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 381912354680367707}
+    - target: {fileID: 6395577748558853619, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 423.9029
+      objectReference: {fileID: 0}
+    - target: {fileID: 6395577748558853619, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502122735408745379, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_text
+      value: 'Taux d''alcool : moyen'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502122735408745379, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502122735408745379, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502122735408745379, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7256072728729063806, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -768,6 +842,34 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 381912354680367707}
+    - target: {fileID: 7604709411698539748, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128398299442206194, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_text
+      value: "Personnes \xE0 servir : 0"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128398299442206194, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_fontSize
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128398299442206194, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128398299442206194, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8235705093032454455, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8776039944076305310, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
