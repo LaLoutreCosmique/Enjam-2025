@@ -270,24 +270,24 @@ MonoBehaviour:
   characters:
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 15
-    soberUpMultiplier: 1
-    timeToSober: 2
+    endDrinkThreshold: 5
+    soberUpMultiplier: 2
+    timeToSober: 1
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 10
+    endDrinkThreshold: 6
     soberUpMultiplier: 2
     timeToSober: 2
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 7
-    soberUpMultiplier: 1.5
-    timeToSober: 1
+    endDrinkThreshold: 6
+    soberUpMultiplier: 1
+    timeToSober: 2
   - currentDrinkAmount: 0
     TimeSinceHasDrank: 0
-    endDrinkThreshold: 10
-    soberUpMultiplier: 1
-    timeToSober: 1
+    endDrinkThreshold: 5
+    soberUpMultiplier: 3
+    timeToSober: 3
   bottles:
   - drinkValue: 1
     servingSize: 2
@@ -332,7 +332,7 @@ MonoBehaviour:
     - Faquin! Cuistre! Fesse-mathieu !
     - Restourne te bafrer de merde avoec la truandaille ! Chiaberna !
     - Cougneu d'poyes !
-  winThreshold: 20
+  chaosToWin: 15
   totalChaos: 0
   transitionTitle: {fileID: 976402376}
   endCanvas: {fileID: 1601456656}
@@ -343,8 +343,8 @@ MonoBehaviour:
   sliders:
   - {fileID: 8090660124991600993}
   - {fileID: 8090660124991600992}
-  - {fileID: 8090660124991600991}
   - {fileID: 8090660124991600990}
+  - {fileID: 8090660124991600991}
   slidersClone:
   - {fileID: 1609875834}
   - {fileID: 1599617544}
@@ -774,6 +774,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 381912354680367707}
+    - target: {fileID: 3777377612285180486, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777377612285180486, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4438059951217043032, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -788,7 +796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4651514932745012366, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5413374500012558067, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -846,6 +854,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7604709411698539748, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8128398299442206194, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_text
       value: "Personnes \xE0 servir : 0"
@@ -864,7 +876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8235705093032454455, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8776039944076305310, guid: 4df4812eaadcbf74aa81c8eeb055218e, type: 3}
       propertyPath: m_AnchorMax.x

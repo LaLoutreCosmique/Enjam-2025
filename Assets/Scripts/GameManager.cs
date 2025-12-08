@@ -19,9 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Bottle[] bottles;
     [SerializeField] int[] dialogueStepTriggers;
     [SerializeField] DialogueCategory[] dialogues;
-    [SerializeField] int winThreshold;
+    [SerializeField] int chaosToWin;
     [SerializeField] float totalChaos;
-    private float drankAnimationDuration = 5f;
+    private float drankAnimationDuration = 4f;
     
     
     [Header("UI References")]
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        drankLevel.value = Mathf.MoveTowards(drankLevel.value, totalChaos, Time.deltaTime / 1f);
+        drankLevel.value = Mathf.MoveTowards(drankLevel.value, totalChaos / chaosToWin, Time.deltaTime / drankAnimationDuration);
         int sliderIndex = 0;
         foreach (Slider slider in sliders)
         {
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
                 GameIsLost();
                 return;
             }
-            if(totalChaos >= winThreshold)
+            if(totalChaos >= chaosToWin)
             {
                 winCanvas.gameObject.SetActive(true);
                 return;
