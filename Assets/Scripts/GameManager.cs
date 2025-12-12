@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] DialogueCategory[] dialogues;
     [SerializeField] int chaosToWin;
     [SerializeField] float totalChaos;
-    private float drankAnimationDuration = 4f;
+    private float drankAnimationDuration = 3f;
     
     
     [Header("UI References")]
@@ -252,8 +252,10 @@ public class GameManager : MonoBehaviour
     public void EndOfTurn()
     {
         int charaCounter = 0;
+        Debug.Log($"Chaos: {totalChaos}/{chaosToWin}");
         foreach (Character chara in characters)
         {
+            Debug.Log($"CHARACTER {charaCounter}: {chara.currentDrinkAmount}/{chara.endDrinkThreshold}");
             if (chara.TimeSinceHasDrank >= chara.timeToSober)
             {
                 chara.currentDrinkAmount -= chara.soberUpMultiplier;
@@ -262,18 +264,19 @@ public class GameManager : MonoBehaviour
             }
             else if (chara.currentDrinkAmount >= chara.endDrinkThreshold)
             {
-                Debug.Log($"CHARACTER {charaCounter} is drunk!!");
+                Debug.Log($"CHARACTER {charaCounter} is drunk!! {chara.currentDrinkAmount}/{chara.endDrinkThreshold}");
                 GameIsLost();
-                return;
-            }
-            if(totalChaos >= chaosToWin)
-            {
-                winCanvas.gameObject.SetActive(true);
                 return;
             }
 
             chara.TimeSinceHasDrank += 1;
             charaCounter++;
+        }
+        
+        if(totalChaos >= chaosToWin)
+        {
+            winCanvas.gameObject.SetActive(true);
+            return;
         }
         
         if (currentRound + 1 >= bottles.Length)

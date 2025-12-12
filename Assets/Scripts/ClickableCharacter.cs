@@ -24,10 +24,13 @@ public class ClickableCharacter : MonoBehaviour, IPointerEnterHandler, IPointerE
     {
         if (!gm.hasServiceStarted || isServed) return;
         gm.ToggleCharacter(characterIndex);
+        renderer.color = new Color(0.8f, 0.8f, 0.8f, 1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (!gm.hasServiceStarted || isServed) return;
+        renderer.color = new Color(1f, 1f, 1f, 1f);
     }
 
     public void OnPointerClick(PointerEventData eventData)
